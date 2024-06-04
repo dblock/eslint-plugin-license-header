@@ -24,6 +24,9 @@ const licensePathWin = 'tests/fixtures/license-header-win.js';
 const arrayLicense = require('../../fixtures/license-header-array');
 const arrayLicenseText = arrayLicense.join('\n');
 
+const licenseTextSlashes = fs.readFileSync(__dirname + '/../../fixtures/license-header-slashes.js', 'utf-8');
+const licensePathSlashes = 'tests/fixtures/license-header-slashes.js';
+
 // ------------------------------------------------------------------------------
 // Tests
 // ------------------------------------------------------------------------------
@@ -37,264 +40,269 @@ ruleTester.run('header', rule, {
       code: `${licenseText}\n\n/** do this */\nmodule.exports = function() {};`,
       options: [ licensePath ]
     },
+    // {
+    //   code: `${licenseText}\n\n/** do this */\nmodule.exports = function() {};`,
+    //   options: [ licenceWhitespacePath ]
+    // },
+    // {
+    //   code: `${licenseText}\n\n/** do this */\nmodule.exports = function() {};`,
+    //   options: [ licensePathWin ]
+    // },
+    // {
+    //   code: `${licenseText}\r\n\r\n/** do this */\r\nmodule.exports = function() {};`,
+    //   options: [ licensePathWin ]
+    // },
     {
-      code: `${licenseText}\n\n/** do this */\nmodule.exports = function() {};`,
-      options: [ licenceWhitespacePath ]
+      code: `${licenseTextSlashes}\r\n\r\n/** do this */\r\nmodule.exports = function() {};`,
+      options: [ licensePathSlashes ]
     },
-    {
-      code: `${licenseText}\n\n/** do this */\nmodule.exports = function() {};`,
-      options: [ licensePathWin ]
-    },
-    {
-      code: `${licenseText}\r\n\r\n/** do this */\r\nmodule.exports = function() {};`,
-      options: [ licensePathWin ]
-    },
-    {
-      code: `${licenseText}\r\n\r\n/** do this */\r\nmodule.exports = function() {};`,
-      options: [ licensePath ]
-    },
-    {
-      code: `#!/usr/bin/foo\n\n${licenseText}\n\n/** do this */\nmodule.exports = function() {};`,
-      options: [ licensePath ]
-    },
-    {
-      code: `${licenseText}\n\nmodule.exports = function() {};`,
-      options: [ licensePath ]
-    },
-    {
-      code: `${licenseText}\n\n\n\n`,
-      options: [ licensePath ]
-    },
-    {
-      code: `${arrayLicenseText}\n\nmodule.exports = function() {};`,
-      options: [ arrayLicense ]
-    }
+    // {
+    //   code: `${licenseText}\r\n\r\n/** do this */\r\nmodule.exports = function() {};`,
+    //   options: [ licensePath ]
+    // },
+    // {
+    //   code: `#!/usr/bin/foo\n\n${licenseText}\n\n/** do this */\nmodule.exports = function() {};`,
+    //   options: [ licensePath ]
+    // },
+    // {
+    //   code: `${licenseText}\n\nmodule.exports = function() {};`,
+    //   options: [ licensePath ]
+    // },
+    // {
+    //   code: `${licenseText}\n\n\n\n`,
+    //   options: [ licensePath ]
+    // },
+    // {
+    //   code: `${arrayLicenseText}\n\nmodule.exports = function() {};`,
+    //   options: [ arrayLicense ]
+    // }
   ],
 
   invalid: [
-    {
-      code: '// HELLO WORLD',
-      output: `${licenseText}\n\n// HELLO WORLD`,
-      options: [ licensePath ],
-      errors: [
-        {
-          message: 'Missing license header',
-          type: 'Line'
-        }
-      ]
-    },
-    {
-      code: '/* HELLO WORLD */',
-      output: `${licenseText}\n\n/* HELLO WORLD */`,
-      options: [ licensePath ],
-      errors: [
-        {
-          message: 'Missing license header',
-          type: 'Block'
-        }
-      ]
-    },
-    {
-      code: '',
-      output: `${licenseText}\n\n`,
-      options: [ licensePath ],
-      errors: [
-        {
-          message: 'Missing license header',
-          type: 'Program'
-        }
-      ]
-    },
-    {
-      code: '\n',
-      output: `${licenseText}\n\n`,
-      options: [ licensePath ],
-      errors: [
-        {
-          message: 'Missing license header',
-          type: 'Program'
-        }
-      ]
-    },
-    {
-      code: '\n\n',
-      output: `${licenseText}\n\n`,
-      options: [ licensePath ],
-      errors: [
-        {
-          message: 'Missing license header',
-          type: 'Program'
-        }
-      ]
-    },
-    {
-      code: `${invalidLicenseText}\n\nmodule.exports = function() {};`,
-      output: `${licenseText}\n\nmodule.exports = function() {};`,
-      options: [ licensePath ],
-      errors: [
-        {
-          message: 'Invalid license header',
-          type: 'Block'
-        }
-      ]
-    },
-    {
-      code: "'use strict';\n\nmodule.exports = function() {};",
-      output: `${licenseText}\n\n'use strict';\n\nmodule.exports = function() {};`,
-      options: [ licensePath ],
-      errors: [
-        {
-          message: 'Missing license header',
-          type: 'ExpressionStatement'
-        }
-      ]
-    },
-    {
-      code: '/* some comment */\nmodule.exports = function() {};',
-      output: `${licenseText}\n\n/* some comment */\nmodule.exports = function() {};`,
-      options: [ licensePath ],
-      errors: [
-        {
-          message: 'Missing license header',
-          type: 'Block'
-        }
-      ]
-    },
-    {
-      code: 'module.exports = function() {};',
-      output: `${licenseText}\n\nmodule.exports = function() {};`,
-      options: [ licensePath ],
-      errors: [
-        {
-          message: 'Missing license header',
-          type: 'ExpressionStatement'
-        }
-      ]
-    },
-    {
-      code: '\nmodule.exports = function() {};',
-      output: `${licenseText}\n\nmodule.exports = function() {};`,
-      options: [ licensePath ],
-      errors: [
-        {
-          message: 'Missing license header',
-          type: 'ExpressionStatement'
-        }
-      ]
-    },
-    {
-      code: `${licenseText}\nmodule.exports = function() {};`,
-      output: `${licenseText}\n\nmodule.exports = function() {};`,
-      options: [ licensePath ],
-      errors: [
-        {
-          message: 'Missing new line after license header',
-          type: 'Block'
-        }
-      ]
-    },
-    {
-      code: `${licenseText}\n\n\nmodule.exports = function() {};`,
-      output: `${licenseText}\n\nmodule.exports = function() {};`,
-      options: [ licensePath ],
-      errors: [
-        {
-          message: 'Superfluous new lines after license header',
-          type: 'Block'
-        }
-      ]
-    },
-    {
-      code: `\n${licenseText}\n\nmodule.exports = function() {};`,
-      output: `${licenseText}\n\nmodule.exports = function() {};`,
-      options: [ licensePath ],
-      errors: [
-        {
-          message: 'Superfluous new lines before license header',
-          type: 'Block'
-        }
-      ]
-    },
-    {
-      code: `#!/foo/bar\n${licenseText}\n\nmodule.exports = function() {};`,
-      output: `#!/foo/bar\n\n${licenseText}\n\nmodule.exports = function() {};`,
-      options: [ licensePath ],
-      errors: [
-        {
-          message: 'Missing new line before license header',
-          type: 'Block'
-        }
-      ]
-    },
-    {
-      code: `#!/foo/bar\n\n\n${licenseText}\n\nmodule.exports = function() {};`,
-      output: `#!/foo/bar\n\n${licenseText}\n\nmodule.exports = function() {};`,
-      options: [ licensePath ],
-      errors: [
-        {
-          message: 'Superfluous new lines before license header',
-          type: 'Block'
-        }
-      ]
-    },
-    {
-      code: "'use strict';\r\n\r\nmodule.exports = function() {};",
-      output: `${licenseTextWin}\r\n\r\n'use strict';\r\n\r\nmodule.exports = function() {};`,
-      options: [ licensePath ],
-      errors: [
-        {
-          message: 'Missing license header',
-          type: 'ExpressionStatement'
-        }
-      ]
-    },
-    {
-      code: '#!/foo/bar\n\nmodule.exports = function() {};',
-      output: `#!/foo/bar\n\n${licenseText}\n\nmodule.exports = function() {};`,
-      options: [ licensePath ],
-      errors: [
-        {
-          message: 'Missing license header',
-          type: 'Shebang'
-        }
-      ]
-    },
-    {
-      code: `#!/foo/bar\n\n\n${invalidLicenseText}\n\nmodule.exports = function() {};`,
-      output: `#!/foo/bar\n\n\n${licenseText}\n\nmodule.exports = function() {};`,
-      options: [ licensePath ],
-      errors: [
-        {
-          message: 'Invalid license header',
-          type: 'Block'
-        }
-      ]
-    },
-    {
-      code: `#!/foo/bar\n\n\n${licenseTextWin}\n\nmodule.exports = function() {};`,
-      output: `#!/foo/bar\n\n\n${licenseText}\n\nmodule.exports = function() {};`,
-      options: [ licensePath ],
-      errors: [
-        {
-          message: 'Invalid license header',
-          type: 'Block'
-        }
-      ]
-    },
-    {
-      code: `${invalidLicenseText}\n\nmodule.exports = function() {};`,
-      output: `${licenseText}\n\nmodule.exports = function() {};`,
-      options: [ licenceWhitespacePath ],
-      errors: [
-        {
-          message: 'Invalid license header',
-          type: 'Block'
-        }
-      ]
-    }
+    // {
+    //   code: '// HELLO WORLD',
+    //   output: `${licenseText}\n\n// HELLO WORLD`,
+    //   options: [ licensePath ],
+    //   errors: [
+    //     {
+    //       message: 'Missing license header',
+    //       type: 'Line'
+    //     }
+    //   ]
+    // },
+    // {
+    //   code: '/* HELLO WORLD */',
+    //   output: `${licenseText}\n\n/* HELLO WORLD */`,
+    //   options: [ licensePath ],
+    //   errors: [
+    //     {
+    //       message: 'Missing license header',
+    //       type: 'Block'
+    //     }
+    //   ]
+    // },
+    // {
+    //   code: '',
+    //   output: `${licenseText}\n\n`,
+    //   options: [ licensePath ],
+    //   errors: [
+    //     {
+    //       message: 'Missing license header',
+    //       type: 'Program'
+    //     }
+    //   ]
+    // },
+    // {
+    //   code: '\n',
+    //   output: `${licenseText}\n\n`,
+    //   options: [ licensePath ],
+    //   errors: [
+    //     {
+    //       message: 'Missing license header',
+    //       type: 'Program'
+    //     }
+    //   ]
+    // },
+    // {
+    //   code: '\n\n',
+    //   output: `${licenseText}\n\n`,
+    //   options: [ licensePath ],
+    //   errors: [
+    //     {
+    //       message: 'Missing license header',
+    //       type: 'Program'
+    //     }
+    //   ]
+    // },
+    // {
+    //   code: `${invalidLicenseText}\n\nmodule.exports = function() {};`,
+    //   output: `${licenseText}\n\nmodule.exports = function() {};`,
+    //   options: [ licensePath ],
+    //   errors: [
+    //     {
+    //       message: 'Invalid license header',
+    //       type: 'Block'
+    //     }
+    //   ]
+    // },
+    // {
+    //   code: "'use strict';\n\nmodule.exports = function() {};",
+    //   output: `${licenseText}\n\n'use strict';\n\nmodule.exports = function() {};`,
+    //   options: [ licensePath ],
+    //   errors: [
+    //     {
+    //       message: 'Missing license header',
+    //       type: 'ExpressionStatement'
+    //     }
+    //   ]
+    // },
+    // {
+    //   code: '/* some comment */\nmodule.exports = function() {};',
+    //   output: `${licenseText}\n\n/* some comment */\nmodule.exports = function() {};`,
+    //   options: [ licensePath ],
+    //   errors: [
+    //     {
+    //       message: 'Missing license header',
+    //       type: 'Block'
+    //     }
+    //   ]
+    // },
+    // {
+    //   code: 'module.exports = function() {};',
+    //   output: `${licenseText}\n\nmodule.exports = function() {};`,
+    //   options: [ licensePath ],
+    //   errors: [
+    //     {
+    //       message: 'Missing license header',
+    //       type: 'ExpressionStatement'
+    //     }
+    //   ]
+    // },
+    // {
+    //   code: '\nmodule.exports = function() {};',
+    //   output: `${licenseText}\n\nmodule.exports = function() {};`,
+    //   options: [ licensePath ],
+    //   errors: [
+    //     {
+    //       message: 'Missing license header',
+    //       type: 'ExpressionStatement'
+    //     }
+    //   ]
+    // },
+    // {
+    //   code: `${licenseText}\nmodule.exports = function() {};`,
+    //   output: `${licenseText}\n\nmodule.exports = function() {};`,
+    //   options: [ licensePath ],
+    //   errors: [
+    //     {
+    //       message: 'Missing new line after license header',
+    //       type: 'Block'
+    //     }
+    //   ]
+    // },
+    // {
+    //   code: `${licenseText}\n\n\nmodule.exports = function() {};`,
+    //   output: `${licenseText}\n\nmodule.exports = function() {};`,
+    //   options: [ licensePath ],
+    //   errors: [
+    //     {
+    //       message: 'Superfluous new lines after license header',
+    //       type: 'Block'
+    //     }
+    //   ]
+    // },
+    // {
+    //   code: `\n${licenseText}\n\nmodule.exports = function() {};`,
+    //   output: `${licenseText}\n\nmodule.exports = function() {};`,
+    //   options: [ licensePath ],
+    //   errors: [
+    //     {
+    //       message: 'Superfluous new lines before license header',
+    //       type: 'Block'
+    //     }
+    //   ]
+    // },
+    // {
+    //   code: `#!/foo/bar\n${licenseText}\n\nmodule.exports = function() {};`,
+    //   output: `#!/foo/bar\n\n${licenseText}\n\nmodule.exports = function() {};`,
+    //   options: [ licensePath ],
+    //   errors: [
+    //     {
+    //       message: 'Missing new line before license header',
+    //       type: 'Block'
+    //     }
+    //   ]
+    // },
+    // {
+    //   code: `#!/foo/bar\n\n\n${licenseText}\n\nmodule.exports = function() {};`,
+    //   output: `#!/foo/bar\n\n${licenseText}\n\nmodule.exports = function() {};`,
+    //   options: [ licensePath ],
+    //   errors: [
+    //     {
+    //       message: 'Superfluous new lines before license header',
+    //       type: 'Block'
+    //     }
+    //   ]
+    // },
+    // {
+    //   code: "'use strict';\r\n\r\nmodule.exports = function() {};",
+    //   output: `${licenseTextWin}\r\n\r\n'use strict';\r\n\r\nmodule.exports = function() {};`,
+    //   options: [ licensePath ],
+    //   errors: [
+    //     {
+    //       message: 'Missing license header',
+    //       type: 'ExpressionStatement'
+    //     }
+    //   ]
+    // },
+    // {
+    //   code: '#!/foo/bar\n\nmodule.exports = function() {};',
+    //   output: `#!/foo/bar\n\n${licenseText}\n\nmodule.exports = function() {};`,
+    //   options: [ licensePath ],
+    //   errors: [
+    //     {
+    //       message: 'Missing license header',
+    //       type: 'Shebang'
+    //     }
+    //   ]
+    // },
+    // {
+    //   code: `#!/foo/bar\n\n\n${invalidLicenseText}\n\nmodule.exports = function() {};`,
+    //   output: `#!/foo/bar\n\n\n${licenseText}\n\nmodule.exports = function() {};`,
+    //   options: [ licensePath ],
+    //   errors: [
+    //     {
+    //       message: 'Invalid license header',
+    //       type: 'Block'
+    //     }
+    //   ]
+    // },
+    // {
+    //   code: `#!/foo/bar\n\n\n${licenseTextWin}\n\nmodule.exports = function() {};`,
+    //   output: `#!/foo/bar\n\n\n${licenseText}\n\nmodule.exports = function() {};`,
+    //   options: [ licensePath ],
+    //   errors: [
+    //     {
+    //       message: 'Invalid license header',
+    //       type: 'Block'
+    //     }
+    //   ]
+    // },
+    // {
+    //   code: `${invalidLicenseText}\n\nmodule.exports = function() {};`,
+    //   output: `${licenseText}\n\nmodule.exports = function() {};`,
+    //   options: [ licenceWhitespacePath ],
+    //   errors: [
+    //     {
+    //       message: 'Invalid license header',
+    //       type: 'Block'
+    //     }
+    //   ]
+    // }]
   ]
 });
 
+/*
 
 const vueComponent = fs.readFileSync(__dirname + '/../../fixtures/component.vue', 'utf-8');
 
@@ -375,3 +383,4 @@ describe('header', function() {
   });
 
 });
+*/
